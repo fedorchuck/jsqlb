@@ -17,7 +17,7 @@ Please read this if you intend to contribute to the project.
 * Make your changes
 * Make sure you include tests
 * Make sure the test suite passes after your changes
-* (Optional) Add your developer id, name and email for POM.XML at [CONTRIBUTORS.md](https://github.com/fedorchuck/jsqlq/blob/master/CONTRIBUTORS.md)
+* (Optional) Add your developer id, name and email for POM.XML at [CONTRIBUTORS.md](https://github.com/fedorchuck/jsqlb/blob/master/CONTRIBUTORS.md)
 * Commit your changes into that branch
 * Use descriptive and meaningful commit messages
 * If you have a lot of commits squash them into a single commit

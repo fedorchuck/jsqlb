@@ -26,9 +26,9 @@ if(project.hasProperty('signing.keyId'))
     }
 
 task([type: Copy], 'backup') {
-    delete "${backup}/jsqlq/"
+    delete "${backup}/${artifactId}/"
     from projectDir.canonicalPath
-    into "${backup}/jsqlq/"
+    into "${backup}/${artifactId}/"
 }
 
 task([type: Copy], 'copyDocs') {
@@ -74,12 +74,12 @@ def generatePom(Object pom) {
         root.appendNode('packaging', 'jar')
         root.appendNode('name', "${stringName}")
         root.appendNode('inceptionYear', "${inceptionYear}")
-        root.appendNode('description', 'JSQLQ is a little Java library for dynamically generating SQL.')
-        root.appendNode('url', 'https://github.com/fedorchuck/jsqlq')
+        root.appendNode('description', 'JSQLB is a little Java library for dynamically generating SQL.')
+        root.appendNode('url', 'https://github.com/fedorchuck/jsqlb')
         def nodeScm = root.appendNode('scm')
-        nodeScm.appendNode('url', 'https://github.com/fedorchuck/jsqlq')
-        nodeScm.appendNode('connection', 'scm:git:https://github.com/fedorchuck/jsqlq')
-        nodeScm.appendNode('developerConnection', 'scm:git:https://github.com/fedorchuck/jsqlq')
+        nodeScm.appendNode('url', 'https://github.com/fedorchuck/jsqlb')
+        nodeScm.appendNode('connection', 'scm:git:https://github.com/fedorchuck/jsqlb')
+        nodeScm.appendNode('developerConnection', 'scm:git:https://github.com/fedorchuck/jsqlb')
         def nodeLicenses = root.appendNode('licenses')
         def NodeLicense = nodeLicenses.appendNode('license')
         NodeLicense.appendNode('name', 'The Apache License, Version 2.0')
