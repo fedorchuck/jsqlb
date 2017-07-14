@@ -26,9 +26,9 @@ if(project.hasProperty('signing.keyId'))
     }
 
 task([type: Copy], 'backup') {
-    delete "${backup}/${artifactId}/"
+    delete "${backup}/${artifact}/"
     from projectDir.canonicalPath
-    into "${backup}/${artifactId}/"
+    into "${backup}/${artifact}/"
 }
 
 task([type: Copy], 'copyDocs') {
