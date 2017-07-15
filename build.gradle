@@ -26,9 +26,9 @@ if(project.hasProperty('signing.keyId'))
     }
 
 task([type: Copy], 'backup') {
-    delete "${backup}/${artifact}/"
+    delete "${backup}/jsqlb/"
     from projectDir.canonicalPath
-    into "${backup}/${artifact}/"
+    into "${backup}/jsqlb/"
 }
 
 task([type: Copy], 'copyDocs') {
