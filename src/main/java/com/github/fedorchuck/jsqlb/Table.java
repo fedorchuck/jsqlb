@@ -94,7 +94,7 @@ public class Table {
         return this.allColumns.contains(column);
     }
 
-    <T> boolean arrayContains(T[] array, T element) {
+    private <T> boolean arrayContains(T[] array, T element) {
         for (T anArray : array)
             if (anArray.equals(element))
                 return true;

@@ -13,7 +13,6 @@ setTargetCompatibility(1.8)
 compileJava.options.encoding = 'UTF-8'
 
 configurations {
-//    providedRuntime
     codacy
 }
 
@@ -25,7 +24,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 
     testCompile group: 'com.codacy', name: 'codacy-coverage-reporter', version: '2.0.0'
-//    codacy group: 'com.codacy', name: 'codacy-coverage-reporter', version: '1.0.7'
 }
 
 ext {
@@ -37,9 +35,6 @@ ext {
             'method'     : 40.00,
             'class'      : 60.00
     ]
-//    environment = [
-//            "CODACY_PROJECT_TOKEN" : CODACY_PROJECT_TOKEN
-//    ]
 }
 
 if(project.hasProperty('signing.keyId'))
@@ -157,7 +152,6 @@ jacocoTestReport {
 
     reports {
         xml.enabled true
-//        xml.destination "${buildDir}/test-results/jacoco/"//${archivesBaseName}.xml"
         csv.enabled false
         html.enabled true
         html.destination "${projectDir.canonicalPath}/docs/jacocotestreport-${version}"

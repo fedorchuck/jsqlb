@@ -20,7 +20,9 @@ package com.github.fedorchuck.jsqlb;
  * DataTypes of a class is enabled by the class implementing the
  * com.github.fedorchuck.DataTypes interface. The DataTypes interface
  * has no methods or fields and serves only to identify the semantics
- * of contain DataTypes of database. <p>
+ * of contain DataTypes of database. While creating table, for each
+ * column, you specify a data type, i.e., what kind of data you want
+ * to store in the table fields. <p>
  *
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  * @since 0.1.0

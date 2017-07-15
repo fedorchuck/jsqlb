@@ -71,8 +71,8 @@ import lombok.EqualsAndHashCode;
 
     @Override
     public JSQLBuilder insert(Table table, Column... columns) {
-<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        if (columns == null)</span>
-<span class="nc" id="L75">            throw new IllegalArgumentException(&quot;Column does not exist in this table. &quot; +</span>
+<span class="pc bpc" id="L74" title="1 of 4 branches missed.">        if ( (columns == null) || (columns.length == 0) )</span>
+<span class="fc" id="L75">            throw new IllegalArgumentException(&quot;Column does not exist in this table. &quot; +</span>
                     &quot;Please check column name, table, configuration of JSQLBuilder.&quot;);
 <span class="fc" id="L77">        StringBuilder names = new StringBuilder();</span>
 <span class="fc" id="L78">        StringBuilder values = new StringBuilder();</span>
@@ -158,24 +158,24 @@ import lombok.EqualsAndHashCode;
 <span class="fc" id="L158">                throw new IllegalArgumentException(&quot;Column does not exist in this table. &quot; +</span>
                         &quot;Please check column name, table, configuration of JSQLBuilder.&quot;);
 
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            switch ((PostgreSQLDataTypes) column.getType()) {</span>
-                case DATETIME:
-                case TEXT:
-                case NUMBER:
+//            switch ((PGDataTypes) column.getType()) {
+//                case DATE:
+//                case TEXT:
+//                default:
 <span class="fc" id="L165">                    this.sql.append(&quot; &quot;);</span>
 <span class="pc bpc" id="L166" title="1 of 2 branches missed.">                    if (column.getNameWithTablePrefix() == null)</span>
 <span class="nc" id="L167">                        this.sql.append(column.getName());</span>
                     else
 <span class="fc" id="L169">                        this.sql.append(column.getNameWithTablePrefix());</span>
 <span class="fc" id="L170">                    this.sql.append(&quot;,&quot;);</span>
-                    break;
+//                    break;
 //                case UUID:
 //                    this.sql
 //                            .append(&quot; &quot;).append(&quot;CONVERT(VARCHAR(36), &quot;)
 //                            .append(entry.getKey()).append(&quot; ) as &quot;)
 //                            .append(entry.getKey()).append(&quot;,&quot;);
 //                    break;
-            }
+//            }
         }
 <span class="fc" id="L180">    }</span>
 

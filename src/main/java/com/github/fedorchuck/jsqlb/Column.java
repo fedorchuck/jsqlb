@@ -37,7 +37,6 @@ public class Column {
         this.type = type;
     }
 
-
     public Column setConvert(DataTypes from, DataTypes to, DataTypes as) {
         this.convert = "";
         return this;

@@ -20,12 +20,11 @@ import com.github.fedorchuck.jsqlb.Column;
 import com.github.fedorchuck.jsqlb.JSQLBuilder;
 import com.github.fedorchuck.jsqlb.SET;
 import com.github.fedorchuck.jsqlb.Table;
-import com.github.fedorchuck.jsqlb.postgresql.PostgreSQL;
-import com.github.fedorchuck.jsqlb.postgresql.PostgreSQLConditionalExpression;
-import com.github.fedorchuck.jsqlb.postgresql.PostgreSQLDataTypes;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.text.CollationElementIterator;
 
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
@@ -40,17 +39,31 @@ public class PostgreSQL_CRUD_Test {
         manager = new PostgreSQL();
 
         table1 = new Table("table1");
-        table1.addColumn("column1", PostgreSQLDataTypes.TEXT);
-        table1.addColumn("column2", PostgreSQLDataTypes.NUMBER);
+        table1.addColumn("column1", PGDataTypes.TEXT);
+        table1.addColumn("column2", PGDataTypes.BOOLEAN);
         table2 = new Table("table2");
-        table2.addColumn("column3", PostgreSQLDataTypes.DATETIME);
-        table2.addColumn(new Column("column4", PostgreSQLDataTypes.NUMBER));
+        table2.addColumn("column3", PGDataTypes.DATE);
+        table2.addColumn(new Column("column4", PGDataTypes.BOOLEAN));
     }
 
     @Test
     public void create() {
         String expected;
         String actual;
+
+        try {
+            manager.insert(table1, new Column[]{}).getSQL();
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Column does not exist in this table. " +
+                    "Please check column name, table, configuration of JSQLBuilder.'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Column does not exist in this table. " +
+                    "Please check column name, table, configuration of JSQLBuilder."))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Column does not exist in this table. " +
+                        "Please check column name, table, configuration of JSQLBuilder.'" +
+                        " current message: " + expectedException.getMessage());
+        }
 
         expected = "INSERT INTO table1 ( column1 ) VALUES ( ? )";
         actual = manager
@@ -84,7 +97,7 @@ public class PostgreSQL_CRUD_Test {
                         table1.getColumn("column2"),
                         table2.getColumn("column3"))
                 .from(table1, table2)
-                .where(new PostgreSQLConditionalExpression(table2.getColumn("column3")).moreThen("5"))
+                .where(new PGConditionalExpression(table2.getColumn("column3")).moreThen("5"))
                 .getSQL();
         Assert.assertEquals(expected, actual);
     }
@@ -99,14 +112,14 @@ public class PostgreSQL_CRUD_Test {
                 .update(table1,
                         new SET(table1.getColumn("column1"), "value1"),
                         new SET("column2", "value2"))
-                .where(new PostgreSQLConditionalExpression(table1.getColumn("column2")).moreThen("5"))
+                .where(new PGConditionalExpression(table1.getColumn("column2")).moreThen("5"))
                 .getSQL();
         Assert.assertEquals(expected, actual);
 
         expected = "UPDATE table1 SET column1 = ?, column2 = ? WHERE column2 > '5' ";
         actual = manager
                 .update(table1, table1.getColumns())
-                .where(new PostgreSQLConditionalExpression(table1.getColumn("column2")).moreThen("5"))
+                .where(new PGConditionalExpression(table1.getColumn("column2")).moreThen("5"))
                 .getSQL();
         Assert.assertEquals(expected, actual);
     }

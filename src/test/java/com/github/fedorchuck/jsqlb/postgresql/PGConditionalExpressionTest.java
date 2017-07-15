@@ -24,16 +24,16 @@ import org.junit.Test;
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  */
-public class PostgreSQLConditionalExpressionTest {
+public class PGConditionalExpressionTest {
     private Column column1;
     private Column column2;
-    private PostgreSQLConditionalExpression conditionalExpression;
+    private PGConditionalExpression conditionalExpression;
 
     @Before
     public void setUp() {
-        column1 = new Column("column1", PostgreSQLDataTypes.TEXT);
-        column2 = new Column("column2", PostgreSQLDataTypes.TEXT);
-        conditionalExpression = new PostgreSQLConditionalExpression(column1);
+        column1 = new Column("column1", PGDataTypes.TEXT);
+        column2 = new Column("column2", PGDataTypes.TEXT);
+        conditionalExpression = new PGConditionalExpression(column1);
     }
 
     @Test
@@ -41,12 +41,23 @@ public class PostgreSQLConditionalExpressionTest {
         String expected;
         String actual;
 
+        try {
+            new PGConditionalExpression(null);
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Column can not be 'null'.'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Column can not be 'null'."))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Column can not be 'null'.'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
         expected = "sql: column1 > ? ";
-        actual = new PostgreSQLConditionalExpression(column1).moreThen().toString();
+        actual = new PGConditionalExpression(column1).moreThen().toString();
         Assert.assertEquals(expected, actual);
 
         expected = "sql: column1 > '5' ";
-        actual = new PostgreSQLConditionalExpression(column1).moreThen("5").toString();
+        actual = new PGConditionalExpression(column1).moreThen("5").toString();
         Assert.assertEquals(expected, actual);
     }
 
@@ -56,11 +67,11 @@ public class PostgreSQLConditionalExpressionTest {
         String actual;
 
         expected = "sql: column1 < ? ";
-        actual = new PostgreSQLConditionalExpression(column1).lessThen().toString();
+        actual = new PGConditionalExpression(column1).lessThen().toString();
         Assert.assertEquals(expected, actual);
 
         expected = "sql: column1 < '5' ";
-        actual = new PostgreSQLConditionalExpression(column1).lessThen("5").toString();
+        actual = new PGConditionalExpression(column1).lessThen("5").toString();
         Assert.assertEquals(expected, actual);
     }
 
@@ -70,11 +81,11 @@ public class PostgreSQLConditionalExpressionTest {
         String actual;
 
         expected = "sql: column1 = ? ";
-        actual = new PostgreSQLConditionalExpression(column1).equal().toString();
+        actual = new PGConditionalExpression(column1).equal().toString();
         Assert.assertEquals(expected, actual);
 
         expected = "sql: column1 = '5' ";
-        actual = new PostgreSQLConditionalExpression(column1).equal("5").toString();
+        actual = new PGConditionalExpression(column1).equal("5").toString();
         Assert.assertEquals(expected, actual);
     }
 

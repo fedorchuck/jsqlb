@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostgreSQLConditionalExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jsqlb</a> &gt; <a href="index.source.html" class="el_package">com.github.fedorchuck.jsqlb.postgresql</a> &gt; <span class="el_source">PostgreSQLConditionalExpression.java</span></div><h1>PostgreSQLConditionalExpression.java</h1><pre class="source lang-java linenums">/*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PGConditionalExpression.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jsqlb</a> &gt; <a href="index.source.html" class="el_package">com.github.fedorchuck.jsqlb.postgresql</a> &gt; <span class="el_source">PGConditionalExpression.java</span></div><h1>PGConditionalExpression.java</h1><pre class="source lang-java linenums">/*
  * Copyright 2017 Volodymyr Fedorchuk &lt;vl.fedorchuck@gmail.com&gt;
  *
  * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
@@ -22,12 +22,12 @@ import com.github.fedorchuck.jsqlb.ConditionalExpression;
 /**
  * @author &lt;a href=&quot;http://vl-fedorchuck.rhcloud.com/&quot;&gt;Volodymyr Fedorchuk&lt;/a&gt;.
  */
-public class PostgreSQLConditionalExpression extends ConditionalExpression {
+public class PGConditionalExpression extends ConditionalExpression {
 <span class="fc" id="L26">    private StringBuilder sql = new StringBuilder();</span>
 
-<span class="fc" id="L28">    public PostgreSQLConditionalExpression(Column column) {</span>
-<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (column == null)</span>
-<span class="nc" id="L30">            throw new IllegalArgumentException(&quot;Column can not be 'null'. &quot; +</span>
+<span class="fc" id="L28">    public PGConditionalExpression(Column column) {</span>
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (column == null)</span>
+<span class="fc" id="L30">            throw new IllegalArgumentException(&quot;Column can not be 'null'. &quot; +</span>
                     &quot;Please check column name, table, configuration of JSQLBuilder.&quot;);
 <span class="fc" id="L32">        this.sql</span>
 <span class="fc" id="L33">                .append(column.getName())</span>

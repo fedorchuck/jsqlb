@@ -16,7 +16,7 @@
 
 package com.github.fedorchuck.jsqlb;
 
-import com.github.fedorchuck.jsqlb.postgresql.PostgreSQLDataTypes;
+import com.github.fedorchuck.jsqlb.postgresql.PGDataTypes;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,13 +28,13 @@ public class TableTest {
     @Test
     public void addColumn() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PostgreSQLDataTypes.TEXT);
-        Column column2 = new Column("column2", PostgreSQLDataTypes.DATETIME);
+        Column column1 = new Column("column1", PGDataTypes.TEXT);
+        Column column2 = new Column("column2", PGDataTypes.DATE);
 
         table.addColumn(column1);
         Assert.assertEquals(true, table.exist(column1));
 
-        table.addColumn("column2", PostgreSQLDataTypes.DATETIME);
+        table.addColumn("column2", PGDataTypes.DATE);
         Assert.assertEquals(true, table.exist(column2));
 
         try {
@@ -52,8 +52,8 @@ public class TableTest {
     @Test
     public void removeColumn() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PostgreSQLDataTypes.TEXT);
-        Column column2 = new Column("column2", PostgreSQLDataTypes.DATETIME);
+        Column column1 = new Column("column1", PGDataTypes.TEXT);
+        Column column2 = new Column("column2", PGDataTypes.DATE);
 
         table.addColumn(column1);
         table.addColumn(column2);
@@ -65,8 +65,8 @@ public class TableTest {
     @Test
     public void getColumn() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PostgreSQLDataTypes.TEXT);
-        Column column2 = new Column("column2", PostgreSQLDataTypes.DATETIME);
+        Column column1 = new Column("column1", PGDataTypes.TEXT);
+        Column column2 = new Column("column2", PGDataTypes.DATE);
 
         table.addColumn(column1);
         table.addColumn(column2);
@@ -79,8 +79,8 @@ public class TableTest {
     @Test
     public void getInsertColumns() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PostgreSQLDataTypes.TEXT);
-        Column column2 = new Column("column2", PostgreSQLDataTypes.DATETIME);
+        Column column1 = new Column("column1", PGDataTypes.TEXT);
+        Column column2 = new Column("column2", PGDataTypes.DATE);
 
         table.addColumn(column1);
         table.addColumn(column2);
@@ -91,10 +91,10 @@ public class TableTest {
     @Test
     public void getInsertColumnsExcept() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PostgreSQLDataTypes.TEXT);
-        Column column2 = new Column("column2", PostgreSQLDataTypes.DATETIME);
-        Column column3 = new Column("column3", PostgreSQLDataTypes.DATETIME);
-        Column column4 = new Column("column4", PostgreSQLDataTypes.NUMBER);
+        Column column1 = new Column("column1", PGDataTypes.TEXT);
+        Column column2 = new Column("column2", PGDataTypes.DATE);
+        Column column3 = new Column("column3", PGDataTypes.DATE);
+        Column column4 = new Column("column4", PGDataTypes.BOOLEAN);
 
         table.addColumn(column1);
         table.addColumn(column2);

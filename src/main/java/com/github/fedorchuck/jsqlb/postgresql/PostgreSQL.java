@@ -71,7 +71,7 @@ public class PostgreSQL extends JSQLBuilder {
 
     @Override
     public JSQLBuilder insert(Table table, Column... columns) {
-        if (columns == null)
+        if ( (columns == null) || (columns.length == 0) )
             throw new IllegalArgumentException("Column does not exist in this table. " +
                     "Please check column name, table, configuration of JSQLBuilder.");
         StringBuilder names = new StringBuilder();
@@ -158,24 +158,24 @@ public class PostgreSQL extends JSQLBuilder {
                 throw new IllegalArgumentException("Column does not exist in this table. " +
                         "Please check column name, table, configuration of JSQLBuilder.");
 
-            switch ((PostgreSQLDataTypes) column.getType()) {
-                case DATETIME:
-                case TEXT:
-                case NUMBER:
+//            switch ((PGDataTypes) column.getType()) {
+//                case DATE:
+//                case TEXT:
+//                default:
                     this.sql.append(" ");
                     if (column.getNameWithTablePrefix() == null)
                         this.sql.append(column.getName());
                     else
                         this.sql.append(column.getNameWithTablePrefix());
                     this.sql.append(",");
-                    break;
+//                    break;
 //                case UUID:
 //                    this.sql
 //                            .append(" ").append("CONVERT(VARCHAR(36), ")
 //                            .append(entry.getKey()).append(" ) as ")
 //                            .append(entry.getKey()).append(",");
 //                    break;
-            }
+//            }
         }
     }
 

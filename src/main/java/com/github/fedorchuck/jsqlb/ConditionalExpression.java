@@ -19,6 +19,7 @@ package com.github.fedorchuck.jsqlb;
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  */
+@SuppressWarnings("SameParameterValue")
 public abstract class ConditionalExpression {
     public abstract ConditionalExpression moreThen();
 

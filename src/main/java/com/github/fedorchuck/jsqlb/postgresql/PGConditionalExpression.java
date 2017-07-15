@@ -22,10 +22,10 @@ import com.github.fedorchuck.jsqlb.ConditionalExpression;
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  */
-public class PostgreSQLConditionalExpression extends ConditionalExpression {
+public class PGConditionalExpression extends ConditionalExpression {
     private StringBuilder sql = new StringBuilder();
 
-    public PostgreSQLConditionalExpression(Column column) {
+    public PGConditionalExpression(Column column) {
         if (column == null)
             throw new IllegalArgumentException("Column can not be 'null'. " +
                     "Please check column name, table, configuration of JSQLBuilder.");

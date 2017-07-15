@@ -34,11 +34,11 @@ public class PostgreSQLTest {
     @Before
     public void setUp() {
         table1 = new Table("table1");
-        table1.addColumn("column1", PostgreSQLDataTypes.TEXT);
-        table1.addColumn("column2", PostgreSQLDataTypes.NUMBER);
+        table1.addColumn("column1", PGDataTypes.TEXT);
+        table1.addColumn("column2", PGDataTypes.BOOLEAN);
         table2 = new Table("table2");
-        table2.addColumn("column3", PostgreSQLDataTypes.DATETIME);
-        table2.addColumn(new Column("column4", PostgreSQLDataTypes.NUMBER));
+        table2.addColumn("column3", PGDataTypes.DATE);
+        table2.addColumn(new Column("column4", PGDataTypes.BOOLEAN));
 
         manager = new PostgreSQL();
     }
@@ -105,8 +105,8 @@ public class PostgreSQLTest {
     public void where() {
         String expected;
         String actual;
-        Column column1 = new Column("column1", PostgreSQLDataTypes.TEXT);
-        Column column2 = new Column("column2", PostgreSQLDataTypes.TEXT);
+        Column column1 = new Column("column1", PGDataTypes.TEXT);
+        Column column2 = new Column("column2", PGDataTypes.TEXT);
 
         expected = "sql: WHERE id = 5 ";
         actual = manager.where("id = 5").toString();
@@ -114,12 +114,12 @@ public class PostgreSQLTest {
         manager.flush();
 
         expected = "sql: WHERE column1 > ? ";
-        actual = manager.where(new PostgreSQLConditionalExpression(column1).moreThen()).toString();
+        actual = manager.where(new PGConditionalExpression(column1).moreThen()).toString();
         Assert.assertEquals(expected, actual);
         manager.flush();
 
         expected = "sql: WHERE column1 > ? AND column2 < ? ";
-        actual = manager.where(new PostgreSQLConditionalExpression(column1).moreThen().and(column2).lessThen()).toString();
+        actual = manager.where(new PGConditionalExpression(column1).moreThen().and(column2).lessThen()).toString();
         Assert.assertEquals(expected, actual);
         manager.flush();
     }
