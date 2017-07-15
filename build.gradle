@@ -59,12 +59,6 @@ task([type: Copy], 'copyDocs') {
     into projectDir.canonicalPath + "/docs/javadoc-${version}"
 }
 
-task([type: Copy], 'copyJacocoTestReport') {
-    delete "$projectDir/docs/jacocotestreport-${version}"
-    from buildDir.canonicalPath + "/test-results/jacoco/html"
-    into projectDir.canonicalPath + "/docs/jacocotestreport-${version}"
-}
-
 task([type: Jar], 'sourcesJar') {
     classifier = 'sources'
     from project.sourceSets.main.allSource
@@ -166,7 +160,7 @@ jacocoTestReport {
 //        xml.destination "${buildDir}/test-results/jacoco/"//${archivesBaseName}.xml"
         csv.enabled false
         html.enabled true
-        html.destination "${buildDir}/test-results/jacoco/html"
+        html.destination "${projectDir.canonicalPath}/docs/jacocotestreport-${version}"
     }
 
     doLast {
