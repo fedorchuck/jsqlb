@@ -17,9 +17,12 @@
 package com.github.fedorchuck.jsqlb.postgresql;
 
 import com.github.fedorchuck.jsqlb.Column;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.TEXT;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.Arrays;
 
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
@@ -31,8 +34,8 @@ public class PGConditionalExpressionTest {
 
     @Before
     public void setUp() {
-        column1 = new Column("column1", PGDataTypes.TEXT);
-        column2 = new Column("column2", PGDataTypes.TEXT);
+        column1 = new Column("column1", new TEXT());
+        column2 = new Column("column2", new TEXT());
         conditionalExpression = new PGConditionalExpression(column1);
     }
 
@@ -111,5 +114,22 @@ public class PGConditionalExpressionTest {
         actual = conditionalExpression.or(column2).toString();
         Assert.assertEquals(expected, actual);
         conditionalExpression.flush();
+    }
+
+    @Test
+    public void escapeCharacters() {
+        PGConditionalExpression conditionalExpression = new PGConditionalExpression(column1);
+
+        Assert.assertEquals("\\\"", conditionalExpression.escapeCharacters("\""));
+        Assert.assertEquals("\\n", conditionalExpression.escapeCharacters("\n"));
+
+        for (int a = 0x0000; a < 0x001F; a++) {
+            if (a == 10)
+                Assert.assertEquals("[\\n]",
+                        conditionalExpression.escapeCharacters(Arrays.toString(Character.toChars(a))));
+            else
+                Assert.assertEquals("\\u" + Arrays.toString(Character.toChars(a)),
+                        conditionalExpression.escapeCharacters(Arrays.toString(Character.toChars(a))));
+        }
     }
 }

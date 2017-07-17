@@ -20,11 +20,12 @@ import com.github.fedorchuck.jsqlb.Column;
 import com.github.fedorchuck.jsqlb.JSQLBuilder;
 import com.github.fedorchuck.jsqlb.SET;
 import com.github.fedorchuck.jsqlb.Table;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.BOOLEAN;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.DATE;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.TEXT;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.text.CollationElementIterator;
 
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
@@ -39,11 +40,11 @@ public class PostgreSQL_CRUD_Test {
         manager = new PostgreSQL();
 
         table1 = new Table("table1");
-        table1.addColumn("column1", PGDataTypes.TEXT);
-        table1.addColumn("column2", PGDataTypes.BOOLEAN);
+        table1.addColumn("column1", new TEXT());
+        table1.addColumn("column2", new BOOLEAN());
         table2 = new Table("table2");
-        table2.addColumn("column3", PGDataTypes.DATE);
-        table2.addColumn(new Column("column4", PGDataTypes.BOOLEAN));
+        table2.addColumn("column3", new DATE());
+        table2.addColumn(new Column("column4", new BOOLEAN()));
     }
 
     @Test

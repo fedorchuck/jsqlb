@@ -19,60 +19,12 @@ package com.github.fedorchuck.jsqlb;
 /**
  * @author &lt;a href=&quot;http://vl-fedorchuck.rhcloud.com/&quot;&gt;Volodymyr Fedorchuk&lt;/a&gt;.
  */
-<span class="fc" id="L22">public abstract class JSQLBuilder {</span>
-
-//    /**
-//     * Returning part of SQL string.
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForInsert(LinkedHashMap&lt;String, DataTypes&gt; allFieldsAndTheirTypes);
-//
-//    /**
-//     * Returning part of SQL string.
-//     * @param fieldName of fields witch should not be include of the string
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForInsertExcept(String fieldName, LinkedHashMap&lt;String, DataTypes&gt; allFieldsAndTheirTypes);
-//
-//    /**
-//     * Returning part of SQL string.
-//     * Converted values: &lt;pre&gt;
-//     * &lt;b&gt;datetime&lt;/b&gt; as datetime
-//     * &lt;b&gt;string&lt;/b&gt; as string
-//     * &lt;b&gt;number&lt;/b&gt; as number
-//     * &lt;b&gt;uuid&lt;/b&gt; as &quot;CONVERT(VARCHAR(36), uuid ) as uuid, &quot;
-//     * &lt;/pre&gt;
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForSelect(LinkedHashMap&lt;String, DataTypes&gt; allFieldsAndTheirTypes);
-//
-//
-//    /**
-//     * Returning part of SQL string.
-//     * Converted values: &lt;pre&gt;
-//     * &lt;b&gt;datetime&lt;/b&gt; as datetime
-//     * &lt;b&gt;string&lt;/b&gt; as string
-//     * &lt;b&gt;number&lt;/b&gt; as number
-//     * &lt;b&gt;uuid&lt;/b&gt; as &quot;CONVERT(VARCHAR(36), uuid ) as uuid, &quot;
-//     * &lt;/pre&gt;
-//     * @param fieldName  of fields witch should not be include of the string
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForSelectExcept(String fieldName, LinkedHashMap&lt;String, DataTypes&gt; allFieldsAndTheirTypes);
-
-//    public abstract JSQLBuilder select();
+@SuppressWarnings(&quot;SameParameterValue&quot;)
+<span class="fc" id="L23">public abstract class JSQLBuilder {</span>
 
     public abstract JSQLBuilder select(Column... columns);
 
     public abstract JSQLBuilder from(Table... tables);
-
-    public abstract JSQLBuilder where(String conditionalExpression);
-
-    public abstract JSQLBuilder where(ConditionalExpression conditionalExpression);
 
     public abstract JSQLBuilder insert(Table table, Column... column);
 
@@ -82,8 +34,12 @@ package com.github.fedorchuck.jsqlb;
 
     public abstract JSQLBuilder delete(Table table);
 
+    public abstract JSQLBuilder where(String conditionalExpression);
+
+    public abstract JSQLBuilder where(ConditionalExpression conditionalExpression);
+
     public abstract String getSQL();
 
-    public abstract void flush();
+    public abstract void bufferCleanup();
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

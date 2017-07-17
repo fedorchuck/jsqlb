@@ -79,6 +79,12 @@ public class Table {
     }
 
     public Column[] getColumnsExcept(Column... columns) {
+        for (Column column : columns) {
+            if (!this.exist(column))
+                throw new IllegalArgumentException("Column does not exist in this table. " +
+                        "Please check column name, table, configuration of JSQLBuilder.");
+        }
+
         Column[] result = new Column[allColumns.size()-columns.length];
         int position = 0;
         for (Column column : allColumns) {

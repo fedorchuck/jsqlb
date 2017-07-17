@@ -19,6 +19,9 @@ package com.github.fedorchuck.jsqlb.postgresql;
 import com.github.fedorchuck.jsqlb.Column;
 import com.github.fedorchuck.jsqlb.JSQLBuilder;
 import com.github.fedorchuck.jsqlb.Table;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.BOOLEAN;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.DATE;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.TEXT;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,11 +37,11 @@ public class PostgreSQLTest {
     @Before
     public void setUp() {
         table1 = new Table("table1");
-        table1.addColumn("column1", PGDataTypes.TEXT);
-        table1.addColumn("column2", PGDataTypes.BOOLEAN);
+        table1.addColumn("column1", new TEXT());
+        table1.addColumn("column2", new BOOLEAN());
         table2 = new Table("table2");
-        table2.addColumn("column3", PGDataTypes.DATE);
-        table2.addColumn(new Column("column4", PGDataTypes.BOOLEAN));
+        table2.addColumn("column3", new DATE());
+        table2.addColumn(new Column("column4", new BOOLEAN()));
 
         manager = new PostgreSQL();
     }
@@ -51,7 +54,7 @@ public class PostgreSQLTest {
         expected = "sql: SELECT * ";
         actual = manager.select().toString();
         Assert.assertEquals(expected, actual);
-        manager.flush();
+        manager.bufferCleanup();
 
         expected = "sql: SELECT table1.column2, table2.column3, table2.column4 ";
         actual = manager.select(
@@ -59,7 +62,7 @@ public class PostgreSQLTest {
                 table2.getColumn("column3"), table2.getColumn("column4"))
                 .toString();
         Assert.assertEquals(expected, actual);
-        manager.flush();
+        manager.bufferCleanup();
 
         try {
             manager.select(table1.getColumn("column4"));
@@ -71,7 +74,7 @@ public class PostgreSQLTest {
                 Assert.fail("Should be exception 'IllegalArgumentException' with message 'Column does not exist in this table'" +
                         " current message: " + expectedException.getMessage());
         }
-        manager.flush();
+        manager.bufferCleanup();
     }
 
     @Test
@@ -93,34 +96,34 @@ public class PostgreSQLTest {
         expected = "sql: FROM table1 ";
         actual = manager.from(table1).toString();
         Assert.assertEquals(expected, actual);
-        manager.flush();
+        manager.bufferCleanup();
 
         expected = "sql: FROM table1, table2 ";
         actual = manager.from(table1, table2).toString();
         Assert.assertEquals(expected, actual);
-        manager.flush();
+        manager.bufferCleanup();
     }
 
     @Test
     public void where() {
         String expected;
         String actual;
-        Column column1 = new Column("column1", PGDataTypes.TEXT);
-        Column column2 = new Column("column2", PGDataTypes.TEXT);
+        Column column1 = new Column("column1", new TEXT());
+        Column column2 = new Column("column2", new TEXT());
 
         expected = "sql: WHERE id = 5 ";
         actual = manager.where("id = 5").toString();
         Assert.assertEquals(expected, actual);
-        manager.flush();
+        manager.bufferCleanup();
 
         expected = "sql: WHERE column1 > ? ";
         actual = manager.where(new PGConditionalExpression(column1).moreThen()).toString();
         Assert.assertEquals(expected, actual);
-        manager.flush();
+        manager.bufferCleanup();
 
         expected = "sql: WHERE column1 > ? AND column2 < ? ";
         actual = manager.where(new PGConditionalExpression(column1).moreThen().and(column2).lessThen()).toString();
         Assert.assertEquals(expected, actual);
-        manager.flush();
+        manager.bufferCleanup();
     }
 }

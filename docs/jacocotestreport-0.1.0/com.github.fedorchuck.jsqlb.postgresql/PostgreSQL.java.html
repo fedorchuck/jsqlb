@@ -143,12 +143,12 @@ import lombok.EqualsAndHashCode;
     @Override
     public String getSQL() {
 <span class="fc" id="L145">        String response = this.sql.toString();</span>
-<span class="fc" id="L146">        this.flush();</span>
+<span class="fc" id="L146">        this.bufferCleanup();</span>
 <span class="fc" id="L147">        return response;</span>
     }
 
     @Override
-    public void flush() {
+    public void bufferCleanup() {
 <span class="fc" id="L152">        this.sql.delete(0, this.sql.length());</span>
 <span class="fc" id="L153">    }</span>
 

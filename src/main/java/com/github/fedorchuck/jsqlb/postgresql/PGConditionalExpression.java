@@ -19,6 +19,8 @@ package com.github.fedorchuck.jsqlb.postgresql;
 import com.github.fedorchuck.jsqlb.Column;
 import com.github.fedorchuck.jsqlb.ConditionalExpression;
 
+import java.util.Arrays;
+
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  */
@@ -45,7 +47,7 @@ public class PGConditionalExpression extends ConditionalExpression {
         this.sql
                 .append("> ")
                 .append('\'')
-                .append(value)
+                .append(escapeCharacters(value))
                 .append('\'')
                 .append(' ');
         return this;
@@ -62,7 +64,7 @@ public class PGConditionalExpression extends ConditionalExpression {
         this.sql
                 .append("< ")
                 .append('\'')
-                .append(value)
+                .append(escapeCharacters(value))
                 .append('\'')
                 .append(' ');
         return this;
@@ -79,7 +81,7 @@ public class PGConditionalExpression extends ConditionalExpression {
         this.sql
                 .append("= ")
                 .append('\'')
-                .append(value)
+                .append(escapeCharacters(value))
                 .append('\'')
                 .append(' ');
         return this;
@@ -118,5 +120,20 @@ public class PGConditionalExpression extends ConditionalExpression {
     @Override
     public String toString() {
         return "sql: " + sql;
+    }
+
+    /**
+     * This method escaping characters for inputted string
+     * @param value to escaping
+     * @return escaped characters string
+     **/
+    public String escapeCharacters(String value) {
+        value = value.replace("\"","\\\"");
+        value = value.replace("\n","\\n");
+
+        for (int a = 0x0000; a < 0x001F; a++)
+            value = value.replace(Arrays.toString(Character.toChars(a)), "\\u" + Arrays.toString(Character.toChars(a)));
+
+        return value;
     }
 }

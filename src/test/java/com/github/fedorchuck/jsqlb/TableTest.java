@@ -16,7 +16,9 @@
 
 package com.github.fedorchuck.jsqlb;
 
-import com.github.fedorchuck.jsqlb.postgresql.PGDataTypes;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.BOOLEAN;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.DATE;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.TEXT;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -28,13 +30,13 @@ public class TableTest {
     @Test
     public void addColumn() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PGDataTypes.TEXT);
-        Column column2 = new Column("column2", PGDataTypes.DATE);
+        Column column1 = new Column("column1", new TEXT());
+        Column column2 = new Column("column2", new DATE());
 
         table.addColumn(column1);
         Assert.assertEquals(true, table.exist(column1));
 
-        table.addColumn("column2", PGDataTypes.DATE);
+        table.addColumn("column2", new DATE());
         Assert.assertEquals(true, table.exist(column2));
 
         try {
@@ -52,8 +54,8 @@ public class TableTest {
     @Test
     public void removeColumn() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PGDataTypes.TEXT);
-        Column column2 = new Column("column2", PGDataTypes.DATE);
+        Column column1 = new Column("column1", new TEXT());
+        Column column2 = new Column("column2", new DATE());
 
         table.addColumn(column1);
         table.addColumn(column2);
@@ -65,8 +67,8 @@ public class TableTest {
     @Test
     public void getColumn() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PGDataTypes.TEXT);
-        Column column2 = new Column("column2", PGDataTypes.DATE);
+        Column column1 = new Column("column1", new TEXT());
+        Column column2 = new Column("column2", new DATE());
 
         table.addColumn(column1);
         table.addColumn(column2);
@@ -79,8 +81,8 @@ public class TableTest {
     @Test
     public void getInsertColumns() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PGDataTypes.TEXT);
-        Column column2 = new Column("column2", PGDataTypes.DATE);
+        Column column1 = new Column("column1", new TEXT());
+        Column column2 = new Column("column2", new DATE());
 
         table.addColumn(column1);
         table.addColumn(column2);
@@ -91,10 +93,10 @@ public class TableTest {
     @Test
     public void getInsertColumnsExcept() {
         Table table = new Table("table");
-        Column column1 = new Column("column1", PGDataTypes.TEXT);
-        Column column2 = new Column("column2", PGDataTypes.DATE);
-        Column column3 = new Column("column3", PGDataTypes.DATE);
-        Column column4 = new Column("column4", PGDataTypes.BOOLEAN);
+        Column column1 = new Column("column1", new TEXT());
+        Column column2 = new Column("column2", new DATE());
+        Column column3 = new Column("column3", new DATE());
+        Column column4 = new Column("column4", new BOOLEAN());
 
         table.addColumn(column1);
         table.addColumn(column2);
@@ -102,5 +104,17 @@ public class TableTest {
         table.addColumn(column4);
 
         Assert.assertArrayEquals(new Column[]{column1, column2}, table.getColumnsExcept(column3, column4));
+
+        try {
+            table.getColumnsExcept(new Column("column5", new TEXT()));
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Column does not exist in " +
+                    "this table.'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Column does not exist in this table."))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Column does not exist " +
+                        "in this table.'. Current message: " + expectedException.getMessage());
+        }
     }
 }

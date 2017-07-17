@@ -143,12 +143,12 @@ public class PostgreSQL extends JSQLBuilder {
     @Override
     public String getSQL() {
         String response = this.sql.toString();
-        this.flush();
+        this.bufferCleanup();
         return response;
     }
 
     @Override
-    public void flush() {
+    public void bufferCleanup() {
         this.sql.delete(0, this.sql.length());
     }
 

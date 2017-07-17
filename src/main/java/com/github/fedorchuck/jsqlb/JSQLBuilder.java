@@ -19,60 +19,12 @@ package com.github.fedorchuck.jsqlb;
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  */
+@SuppressWarnings("SameParameterValue")
 public abstract class JSQLBuilder {
-
-//    /**
-//     * Returning part of SQL string.
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForInsert(LinkedHashMap<String, DataTypes> allFieldsAndTheirTypes);
-//
-//    /**
-//     * Returning part of SQL string.
-//     * @param fieldName of fields witch should not be include of the string
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForInsertExcept(String fieldName, LinkedHashMap<String, DataTypes> allFieldsAndTheirTypes);
-//
-//    /**
-//     * Returning part of SQL string.
-//     * Converted values: <pre>
-//     * <b>datetime</b> as datetime
-//     * <b>string</b> as string
-//     * <b>number</b> as number
-//     * <b>uuid</b> as "CONVERT(VARCHAR(36), uuid ) as uuid, "
-//     * </pre>
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForSelect(LinkedHashMap<String, DataTypes> allFieldsAndTheirTypes);
-//
-//
-//    /**
-//     * Returning part of SQL string.
-//     * Converted values: <pre>
-//     * <b>datetime</b> as datetime
-//     * <b>string</b> as string
-//     * <b>number</b> as number
-//     * <b>uuid</b> as "CONVERT(VARCHAR(36), uuid ) as uuid, "
-//     * </pre>
-//     * @param fieldName  of fields witch should not be include of the string
-//     * @param allFieldsAndTheirTypes should contains name of filed as key and type of this field at a database as value.
-//     * @return part of SQL code as string
-//     **/
-//    public abstract String getFieldsForSelectExcept(String fieldName, LinkedHashMap<String, DataTypes> allFieldsAndTheirTypes);
-
-//    public abstract JSQLBuilder select();
 
     public abstract JSQLBuilder select(Column... columns);
 
     public abstract JSQLBuilder from(Table... tables);
-
-    public abstract JSQLBuilder where(String conditionalExpression);
-
-    public abstract JSQLBuilder where(ConditionalExpression conditionalExpression);
 
     public abstract JSQLBuilder insert(Table table, Column... column);
 
@@ -82,7 +34,11 @@ public abstract class JSQLBuilder {
 
     public abstract JSQLBuilder delete(Table table);
 
+    public abstract JSQLBuilder where(String conditionalExpression);
+
+    public abstract JSQLBuilder where(ConditionalExpression conditionalExpression);
+
     public abstract String getSQL();
 
-    public abstract void flush();
+    public abstract void bufferCleanup();
 }
