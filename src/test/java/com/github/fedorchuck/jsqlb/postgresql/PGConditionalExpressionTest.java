@@ -97,11 +97,11 @@ public class PGConditionalExpressionTest {
         String expected;
         String actual;
 
-        conditionalExpression.flush();
+        conditionalExpression.bufferCleanup();
         expected = "sql: AND column2 ";
         actual = conditionalExpression.and(column2).toString();
         Assert.assertEquals(expected, actual);
-        conditionalExpression.flush();
+        conditionalExpression.bufferCleanup();
     }
 
     @Test
@@ -109,27 +109,11 @@ public class PGConditionalExpressionTest {
         String expected;
         String actual;
 
-        conditionalExpression.flush();
+        conditionalExpression.bufferCleanup();
         expected = "sql: OR column2 ";
         actual = conditionalExpression.or(column2).toString();
         Assert.assertEquals(expected, actual);
-        conditionalExpression.flush();
+        conditionalExpression.bufferCleanup();
     }
 
-    @Test
-    public void escapeCharacters() {
-        PGConditionalExpression conditionalExpression = new PGConditionalExpression(column1);
-
-        Assert.assertEquals("\\\"", conditionalExpression.escapeCharacters("\""));
-        Assert.assertEquals("\\n", conditionalExpression.escapeCharacters("\n"));
-
-        for (int a = 0x0000; a < 0x001F; a++) {
-            if (a == 10)
-                Assert.assertEquals("[\\n]",
-                        conditionalExpression.escapeCharacters(Arrays.toString(Character.toChars(a))));
-            else
-                Assert.assertEquals("\\u" + Arrays.toString(Character.toChars(a)),
-                        conditionalExpression.escapeCharacters(Arrays.toString(Character.toChars(a))));
-        }
-    }
 }

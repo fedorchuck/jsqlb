@@ -39,5 +39,5 @@ public abstract class ConditionalExpression {
 
     public abstract String getSQL();
 
-    public abstract void flush();
+    public abstract void bufferCleanup();
 }

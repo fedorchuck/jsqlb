@@ -126,4 +126,28 @@ public class PostgreSQLTest {
         Assert.assertEquals(expected, actual);
         manager.bufferCleanup();
     }
+
+    @Test
+    public void returning() {
+        String expected;
+        String actual;
+        Column column1 = new Column("column1", new TEXT());
+        Column column2 = new Column("column2", new TEXT());
+
+        expected = "sql: RETURNING * ";
+        actual = manager.returning().toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+
+        expected = "sql: RETURNING column1 ";
+        actual = manager.returning(column1).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+
+        expected = "sql: RETURNING table1.column1, column2 ";
+        actual = manager.returning(table1.getColumn("column1"), column2).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+
+    }
 }

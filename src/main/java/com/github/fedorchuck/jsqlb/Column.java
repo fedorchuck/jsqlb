@@ -19,6 +19,7 @@ package com.github.fedorchuck.jsqlb;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
@@ -60,5 +61,12 @@ public class Column {
         result = 31 * result + type.hashCode();
         result = 31 * result + (convert != null ? convert.hashCode() : 0);
         return result;
+    }
+
+    public String getNameWithTablePrefix() {
+        if (StringUtils.isBlank(nameWithTablePrefix))
+            return name;
+        else
+            return nameWithTablePrefix;
     }
 }

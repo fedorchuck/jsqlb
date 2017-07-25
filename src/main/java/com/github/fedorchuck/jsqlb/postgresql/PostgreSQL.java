@@ -17,12 +17,10 @@
 package com.github.fedorchuck.jsqlb.postgresql;
 
 import com.github.fedorchuck.jsqlb.*;
-import lombok.EqualsAndHashCode;
 
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  */
-@EqualsAndHashCode(callSuper = true)
 public class PostgreSQL extends JSQLBuilder {
     private StringBuilder sql = new StringBuilder();
 
@@ -70,6 +68,24 @@ public class PostgreSQL extends JSQLBuilder {
     }
 
     @Override
+    public JSQLBuilder returning(Column... columns) {
+        this.sql.append("RETURNING");
+        if (columns.length == 0)
+            this.sql.append(" * ");
+        else {
+            for (Column column: columns) {
+                this.sql
+                        .append(" ")
+                        .append(column.getNameWithTablePrefix())
+                        .append(",");
+            }
+            this.sql.deleteCharAt(this.sql.length()-1);
+            this.sql.append(' ');
+        }
+        return this;
+    }
+
+    @Override
     public JSQLBuilder insert(Table table, Column... columns) {
         if ( (columns == null) || (columns.length == 0) )
             throw new IllegalArgumentException("Column does not exist in this table. " +
@@ -90,7 +106,7 @@ public class PostgreSQL extends JSQLBuilder {
                 .append(names)
                 .append(") VALUES ( ")
                 .append(values)
-                .append(")");
+                .append(") ");
         return this;
     }
 

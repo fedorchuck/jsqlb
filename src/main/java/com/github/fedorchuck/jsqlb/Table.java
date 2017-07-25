@@ -16,17 +16,13 @@
 
 package com.github.fedorchuck.jsqlb;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 import java.util.LinkedList;
 
 /**
  * @author <a href="http://vl-fedorchuck.rhcloud.com/">Volodymyr Fedorchuk</a>.
  */
-@ToString
-@EqualsAndHashCode
 public class Table {
     @Getter
     private final String tableName;

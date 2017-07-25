@@ -66,17 +66,25 @@ public class PostgreSQL_CRUD_Test {
                         " current message: " + expectedException.getMessage());
         }
 
-        expected = "INSERT INTO table1 ( column1 ) VALUES ( ? )";
+        expected = "INSERT INTO table1 ( column1 ) VALUES ( ? ) ";
         actual = manager
                 .insert(table1, table1.getColumn("column1")).getSQL();
         Assert.assertEquals(expected, actual);
-        expected = "INSERT INTO table1 ( column1, column2 ) VALUES ( ?, ? )";
+        expected = "INSERT INTO table1 ( column1, column2 ) VALUES ( ?, ? ) ";
         actual = manager
                 .insert(table1, table1.getColumns()).getSQL();
         Assert.assertEquals(expected, actual);
-        expected = "INSERT INTO table1 ( column1 ) VALUES ( ? )";
+        expected = "INSERT INTO table1 ( column1 ) VALUES ( ? ) ";
         actual = manager
                 .insert(table1, table1.getColumnsExcept(table1.getColumn("column2"))).getSQL();
+        Assert.assertEquals(expected, actual);
+        expected = "INSERT INTO table1 ( column1 ) VALUES ( ? ) RETURNING * ";
+        actual = manager
+                .insert(table1, table1.getColumnsExcept(table1.getColumn("column2"))).returning().getSQL();
+        Assert.assertEquals(expected, actual);
+        expected = "INSERT INTO table1 ( column1, column2 ) VALUES ( ?, ? ) RETURNING table1.column1 ";
+        actual = manager
+                .insert(table1, table1.getColumns()).returning(table1.getColumn("column1")).getSQL();
         Assert.assertEquals(expected, actual);
     }
 

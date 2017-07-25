@@ -38,6 +38,8 @@ public abstract class JSQLBuilder {
 
     public abstract JSQLBuilder where(ConditionalExpression conditionalExpression);
 
+    public abstract JSQLBuilder returning(Column... columns);
+
     public abstract String getSQL();
 
     public abstract void bufferCleanup();
