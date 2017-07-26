@@ -29,7 +29,7 @@ public class SET {
     private String value;
 
     public SET(Column column, String value) {
-        this.column = column.getName();
+        this.column = column.getNameWithTablePrefix();
         this.value = value;
     }
 }

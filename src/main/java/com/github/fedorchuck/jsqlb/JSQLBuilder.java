@@ -38,6 +38,20 @@ public abstract class JSQLBuilder {
 
     public abstract JSQLBuilder where(ConditionalExpression conditionalExpression);
 
+    public abstract JSQLBuilder orderBy(Order... orders);
+
+    public abstract JSQLBuilder crossJoin(Table table);
+
+    public abstract JSQLBuilder innerJoin(Table table);
+
+    public abstract JSQLBuilder leftOuterJoin(Table table);
+
+    public abstract JSQLBuilder rightOuterJoin(Table table);
+
+    public abstract JSQLBuilder fullOuterJoin(Table table);
+
+    public abstract JSQLBuilder on(ConditionalExpression conditionalExpression);
+
     public abstract JSQLBuilder returning(Column... columns);
 
     public abstract String getSQL();

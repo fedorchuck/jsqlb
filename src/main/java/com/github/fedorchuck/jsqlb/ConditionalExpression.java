@@ -33,6 +33,10 @@ public abstract class ConditionalExpression {
 
     public abstract ConditionalExpression equal(String value);
 
+    public abstract ConditionalExpression equal(Column column);
+
+    public abstract ConditionalExpression equal(boolean value);
+
     public abstract ConditionalExpression and(Column column);
 
     public abstract ConditionalExpression or(Column column);

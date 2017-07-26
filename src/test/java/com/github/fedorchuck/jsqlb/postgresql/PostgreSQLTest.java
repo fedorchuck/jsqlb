@@ -18,9 +18,11 @@ package com.github.fedorchuck.jsqlb.postgresql;
 
 import com.github.fedorchuck.jsqlb.Column;
 import com.github.fedorchuck.jsqlb.JSQLBuilder;
+import com.github.fedorchuck.jsqlb.Order;
 import com.github.fedorchuck.jsqlb.Table;
 import com.github.fedorchuck.jsqlb.postgresql.datatypes.BOOLEAN;
 import com.github.fedorchuck.jsqlb.postgresql.datatypes.DATE;
+import com.github.fedorchuck.jsqlb.postgresql.datatypes.FLOAT8;
 import com.github.fedorchuck.jsqlb.postgresql.datatypes.TEXT;
 import org.junit.Assert;
 import org.junit.Before;
@@ -126,6 +128,171 @@ public class PostgreSQLTest {
         Assert.assertEquals(expected, actual);
         manager.bufferCleanup();
     }
+
+    @Test
+    public void orderBy() {
+        String expected;
+        String actual;
+
+        Column column3 = new Column("column3", new FLOAT8());
+
+        try {
+            manager.orderBy(null);
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Arguments missed'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Arguments missed"))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Arguments missed.'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
+        try {
+            manager.orderBy(new Order(){});
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Columns missed (null) '");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Columns missed (null)"))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Columns missed (null)'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
+        expected = "sql: ORDER BY table1.column1 ASC ";
+        actual = manager.orderBy(new Order(Order.Sort.ASC, table1.getColumn("column1"))).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+
+        expected = "sql: ORDER BY table1.column1, table1.column2 ASC, column3 DESC ";
+        actual = manager.orderBy(
+                new Order(Order.Sort.ASC, table1.getColumn("column1"), table1.getColumn("column2")),
+                new Order(Order.Sort.DESC, column3)
+        ).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+    }
+
+    @Test
+    public void crossJoin() {
+        String expected;
+        String actual;
+
+        try {
+            manager.crossJoin(null);
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Table's name missed"))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed.'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
+        expected = "sql: CROSS JOIN table1 ";
+        actual = manager.crossJoin(table1).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+    }
+
+    @Test
+    public void innerJoin() {
+        String expected;
+        String actual;
+
+        try {
+            manager.innerJoin(null);
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Table's name missed"))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed.'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
+        expected = "sql: INNER JOIN table1 ";
+        actual = manager.innerJoin(table1).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+    }
+
+    @Test
+    public void leftOuterJoin() {
+        String expected;
+        String actual;
+
+        try {
+            manager.leftOuterJoin(null);
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Table's name missed"))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed.'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
+        expected = "sql: LEFT OUTER JOIN table1 ";
+        actual = manager.leftOuterJoin(table1).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+    }
+
+    @Test
+    public void rightOuterJoin() {
+        String expected;
+        String actual;
+
+        try {
+            manager.rightOuterJoin(null);
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Table's name missed"))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed.'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
+        expected = "sql: RIGHT OUTER JOIN table1 ";
+        actual = manager.rightOuterJoin(table1).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+    }
+
+    @Test
+    public void fullOuterJoin() {
+        String expected;
+        String actual;
+
+        try {
+            manager.fullOuterJoin(null);
+            Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed'");
+        } catch (IllegalArgumentException expectedException) {
+            if (expectedException.getMessage().contains("Table's name missed"))
+                Assert.assertTrue(true);
+            else
+                Assert.fail("Should be exception 'IllegalArgumentException' with message 'Table's name missed.'" +
+                        " current message: " + expectedException.getMessage());
+        }
+
+        expected = "sql: FULL OUTER JOIN table1 ";
+        actual = manager.fullOuterJoin(table1).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+    }
+
+    @Test
+    public void on() {
+        String expected;
+        String actual;
+
+        expected = "sql: ON table1.column1 = ? ";
+        actual = manager.on(new PGConditionalExpression(table1.getColumn("column1")).equal()).toString();
+        Assert.assertEquals(expected, actual);
+        manager.bufferCleanup();
+    }
+
 
     @Test
     public void returning() {

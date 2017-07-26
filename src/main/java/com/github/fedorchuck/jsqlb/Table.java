@@ -32,8 +32,8 @@ public class Table {
         this.tableName = tableName;
     }
 
-    public Table addColumn(String name, DataTypes type) {
-        this.addColumn(new Column(name, type));
+    public Table addColumn(String columnName, DataTypes type) {
+        this.addColumn(new Column(columnName, type));
         return this;
     }
 

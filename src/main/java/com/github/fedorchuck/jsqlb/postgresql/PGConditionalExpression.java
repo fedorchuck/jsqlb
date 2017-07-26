@@ -31,7 +31,7 @@ public class PGConditionalExpression extends ConditionalExpression {
             throw new IllegalArgumentException("Column can not be 'null'. " +
                     "Please check column name, table, configuration of JSQLBuilder.");
         this.sql
-                .append(column.getName())
+                .append(column.getNameWithTablePrefix())
                 .append(' ');
     }
 
@@ -87,10 +87,22 @@ public class PGConditionalExpression extends ConditionalExpression {
     }
 
     @Override
+    public ConditionalExpression equal(Column column) {
+        this.sql.append("= ").append(column.getNameWithTablePrefix()).append(' ');
+        return this;
+    }
+
+    @Override
+    public ConditionalExpression equal(boolean value) {
+        this.sql.append("= ").append(value).append(' ');
+        return this;
+    }
+
+    @Override
     public ConditionalExpression and(Column column) {
         this.sql
                 .append("AND ")
-                .append(column.getName())
+                .append(column.getNameWithTablePrefix())
                 .append(' ');
         return this;
     }
@@ -99,7 +111,7 @@ public class PGConditionalExpression extends ConditionalExpression {
     public ConditionalExpression or(Column column) {
         this.sql
                 .append("OR ")
-                .append(column.getName())
+                .append(column.getNameWithTablePrefix())
                 .append(' ');
         return this;
     }

@@ -68,6 +68,93 @@ public class PostgreSQL extends JSQLBuilder {
     }
 
     @Override
+    public JSQLBuilder orderBy(Order... orders) {
+        if (orders == null || orders.length == 0)
+            throw new IllegalArgumentException("Arguments missed.");
+        this.sql.append("ORDER BY");
+        for (Order order : orders) {
+            this.sql
+                    .append(order.getSQL())
+                    .append(",");
+        }
+        this.sql.deleteCharAt(this.sql.length()-1);
+        this.sql.append(' ');
+        return this;
+    }
+
+    @Override
+    public JSQLBuilder crossJoin(Table table) {
+        if (table == null)
+            throw new IllegalArgumentException("Table's name missed (null) .");
+
+        this.sql
+                .append("CROSS JOIN ")
+                .append(table.getTableName())
+                .append(" ");
+
+        return this;
+    }
+
+    @Override
+    public JSQLBuilder innerJoin(Table table) {
+        if (table == null)
+            throw new IllegalArgumentException("Table's name missed (null) .");
+
+        this.sql
+                .append("INNER JOIN ")
+                .append(table.getTableName())
+                .append(" ");
+
+        return this;
+    }
+
+    @Override
+    public JSQLBuilder leftOuterJoin(Table table) {
+        if (table == null)
+            throw new IllegalArgumentException("Table's name missed (null) .");
+
+        this.sql
+                .append("LEFT OUTER JOIN ")
+                .append(table.getTableName())
+                .append(" ");
+
+        return this;
+    }
+
+    @Override
+    public JSQLBuilder rightOuterJoin(Table table) {
+        if (table == null)
+            throw new IllegalArgumentException("Table's name missed (null) .");
+
+        this.sql
+                .append("RIGHT OUTER JOIN ")
+                .append(table.getTableName())
+                .append(" ");
+
+        return this;
+    }
+
+    @Override
+    public JSQLBuilder fullOuterJoin(Table table) {
+        if (table == null)
+            throw new IllegalArgumentException("Table's name missed (null) .");
+
+        this.sql
+                .append("FULL OUTER JOIN ")
+                .append(table.getTableName())
+                .append(" ");
+
+        return this;
+    }
+
+    @Override
+    public JSQLBuilder on(ConditionalExpression conditionalExpression) {
+        this.sql.append("ON ");
+        this.sql.append(conditionalExpression.getSQL());
+        return this;
+    }
+
+    @Override
     public JSQLBuilder returning(Column... columns) {
         this.sql.append("RETURNING");
         if (columns.length == 0)
