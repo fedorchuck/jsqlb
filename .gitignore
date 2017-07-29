@@ -1,7 +1,7 @@
 /.gradle/
 /.idea/
 /build/
-/docs/jacocotestreport-0.1.0/
-/docs/javadoc-0.1.0/
+#/docs/jacocotestreport-0.1.0/
+#/docs/javadoc-0.1.0/
 gradle.properties
 jsqlb.iml

@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostgreSQL.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">jsqlb</a> &gt; <a href="index.source.html" class="el_package">com.github.fedorchuck.jsqlb.postgresql</a> &gt; <span class="el_source">PostgreSQL.java</span></div><h1>PostgreSQL.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2017 Volodymyr Fedorchuk &lt;vl.fedorchuck@gmail.com&gt;
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.fedorchuck.jsqlb.postgresql;
+
+import com.github.fedorchuck.jsqlb.*;
+
+/**
+ * @author &lt;a href=&quot;http://vl-fedorchuck.rhcloud.com/&quot;&gt;Volodymyr Fedorchuk&lt;/a&gt;.
+ */
+<span class="fc" id="L24">public class PostgreSQL extends JSQLBuilder {</span>
+<span class="fc" id="L25">    private StringBuilder sql = new StringBuilder();</span>
+
+    @Override
+    public JSQLBuilder select(Column... columns) {
+<span class="fc" id="L29">        this.sql.append(&quot;SELECT&quot;);</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (columns.length == 0) {</span>
+<span class="fc" id="L31">            this.sql.append(&quot; *&quot;);</span>
+        } else {
+<span class="fc" id="L33">            addSelectStatement(columns);</span>
+<span class="fc" id="L34">            this.sql.deleteCharAt(this.sql.length()-1);</span>
+        }
+<span class="fc" id="L36">        this.sql.append(' ');</span>
+<span class="fc" id="L37">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder from(Table... tables) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        if (tables.length == 0)</span>
+<span class="fc" id="L43">            throw new IllegalArgumentException(&quot;Table's name missed.&quot;);</span>
+<span class="fc" id="L44">        this.sql.append(&quot;FROM&quot;);</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        for (Table table : tables) {</span>
+<span class="fc" id="L46">            this.sql</span>
+<span class="fc" id="L47">                    .append(&quot; &quot;)</span>
+<span class="fc" id="L48">                    .append(table.getTableName())</span>
+<span class="fc" id="L49">                    .append(&quot;,&quot;);</span>
+        }
+<span class="fc" id="L51">        this.sql.deleteCharAt(this.sql.length()-1);</span>
+<span class="fc" id="L52">        this.sql.append(' ');</span>
+<span class="fc" id="L53">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder where(String conditional) {
+<span class="fc" id="L58">        this.sql.append(&quot;WHERE &quot;);</span>
+<span class="fc" id="L59">        this.sql.append(conditional).append(&quot; &quot;);</span>
+<span class="fc" id="L60">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder where(ConditionalExpression conditionalExpression) {
+<span class="fc" id="L65">        this.sql.append(&quot;WHERE &quot;);</span>
+<span class="fc" id="L66">        this.sql.append(conditionalExpression.getSQL());</span>
+<span class="fc" id="L67">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder orderBy(Order... orders) {
+<span class="pc bpc" id="L72" title="1 of 4 branches missed.">        if (orders == null || orders.length == 0)</span>
+<span class="fc" id="L73">            throw new IllegalArgumentException(&quot;Arguments missed.&quot;);</span>
+<span class="fc" id="L74">        this.sql.append(&quot;ORDER BY&quot;);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (Order order : orders) {</span>
+<span class="fc" id="L76">            this.sql</span>
+<span class="fc" id="L77">                    .append(order.getSQL())</span>
+<span class="fc" id="L78">                    .append(&quot;,&quot;);</span>
+        }
+<span class="fc" id="L80">        this.sql.deleteCharAt(this.sql.length()-1);</span>
+<span class="fc" id="L81">        this.sql.append(' ');</span>
+<span class="fc" id="L82">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder crossJoin(Table table) {
+<span class="fc bfc" id="L87" title="All 2 branches covered.">        if (table == null)</span>
+<span class="fc" id="L88">            throw new IllegalArgumentException(&quot;Table's name missed (null) .&quot;);</span>
+
+<span class="fc" id="L90">        this.sql</span>
+<span class="fc" id="L91">                .append(&quot;CROSS JOIN &quot;)</span>
+<span class="fc" id="L92">                .append(table.getTableName())</span>
+<span class="fc" id="L93">                .append(&quot; &quot;);</span>
+
+<span class="fc" id="L95">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder innerJoin(Table table) {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">        if (table == null)</span>
+<span class="fc" id="L101">            throw new IllegalArgumentException(&quot;Table's name missed (null) .&quot;);</span>
+
+<span class="fc" id="L103">        this.sql</span>
+<span class="fc" id="L104">                .append(&quot;INNER JOIN &quot;)</span>
+<span class="fc" id="L105">                .append(table.getTableName())</span>
+<span class="fc" id="L106">                .append(&quot; &quot;);</span>
+
+<span class="fc" id="L108">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder leftOuterJoin(Table table) {
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (table == null)</span>
+<span class="fc" id="L114">            throw new IllegalArgumentException(&quot;Table's name missed (null) .&quot;);</span>
+
+<span class="fc" id="L116">        this.sql</span>
+<span class="fc" id="L117">                .append(&quot;LEFT OUTER JOIN &quot;)</span>
+<span class="fc" id="L118">                .append(table.getTableName())</span>
+<span class="fc" id="L119">                .append(&quot; &quot;);</span>
+
+<span class="fc" id="L121">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder rightOuterJoin(Table table) {
+<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (table == null)</span>
+<span class="fc" id="L127">            throw new IllegalArgumentException(&quot;Table's name missed (null) .&quot;);</span>
+
+<span class="fc" id="L129">        this.sql</span>
+<span class="fc" id="L130">                .append(&quot;RIGHT OUTER JOIN &quot;)</span>
+<span class="fc" id="L131">                .append(table.getTableName())</span>
+<span class="fc" id="L132">                .append(&quot; &quot;);</span>
+
+<span class="fc" id="L134">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder fullOuterJoin(Table table) {
+<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (table == null)</span>
+<span class="fc" id="L140">            throw new IllegalArgumentException(&quot;Table's name missed (null) .&quot;);</span>
+
+<span class="fc" id="L142">        this.sql</span>
+<span class="fc" id="L143">                .append(&quot;FULL OUTER JOIN &quot;)</span>
+<span class="fc" id="L144">                .append(table.getTableName())</span>
+<span class="fc" id="L145">                .append(&quot; &quot;);</span>
+
+<span class="fc" id="L147">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder on(ConditionalExpression conditionalExpression) {
+<span class="fc" id="L152">        this.sql.append(&quot;ON &quot;);</span>
+<span class="fc" id="L153">        this.sql.append(conditionalExpression.getSQL());</span>
+<span class="fc" id="L154">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder returning(Column... columns) {
+<span class="fc" id="L159">        this.sql.append(&quot;RETURNING&quot;);</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">        if (columns.length == 0)</span>
+<span class="fc" id="L161">            this.sql.append(&quot; * &quot;);</span>
+        else {
+<span class="fc bfc" id="L163" title="All 2 branches covered.">            for (Column column: columns) {</span>
+<span class="fc" id="L164">                this.sql</span>
+<span class="fc" id="L165">                        .append(&quot; &quot;)</span>
+<span class="fc" id="L166">                        .append(column.getNameWithTablePrefix())</span>
+<span class="fc" id="L167">                        .append(&quot;,&quot;);</span>
+            }
+<span class="fc" id="L169">            this.sql.deleteCharAt(this.sql.length()-1);</span>
+<span class="fc" id="L170">            this.sql.append(' ');</span>
+        }
+<span class="fc" id="L172">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder insert(Table table, Column... columns) {
+<span class="pc bpc" id="L177" title="1 of 4 branches missed.">        if ( (columns == null) || (columns.length == 0) )</span>
+<span class="fc" id="L178">            throw new IllegalArgumentException(&quot;Column does not exist in this table. &quot; +</span>
+                    &quot;Please check column name, table, configuration of JSQLBuilder.&quot;);
+<span class="fc" id="L180">        StringBuilder names = new StringBuilder();</span>
+<span class="fc" id="L181">        StringBuilder values = new StringBuilder();</span>
+<span class="fc bfc" id="L182" title="All 2 branches covered.">        for (Column column : columns) {</span>
+<span class="fc" id="L183">            names.append(column.getName()).append(&quot;, &quot;);</span>
+<span class="fc" id="L184">            values.append(&quot;?, &quot;);</span>
+        }
+<span class="fc" id="L186">        names.deleteCharAt(names.length()-2);</span>
+<span class="fc" id="L187">        values.deleteCharAt(values.length()-2);</span>
+
+<span class="fc" id="L189">        this.sql</span>
+<span class="fc" id="L190">                .append(&quot;INSERT INTO &quot;)</span>
+<span class="fc" id="L191">                .append(table.getTableName())</span>
+<span class="fc" id="L192">                .append(&quot; ( &quot;)</span>
+<span class="fc" id="L193">                .append(names)</span>
+<span class="fc" id="L194">                .append(&quot;) VALUES ( &quot;)</span>
+<span class="fc" id="L195">                .append(values)</span>
+<span class="fc" id="L196">                .append(&quot;) &quot;);</span>
+<span class="fc" id="L197">        return this;</span>
+    }
+
+    @Override //update with params //UPDATE table1 SET column1 = ?, column2 = ?
+    public JSQLBuilder update(Table table, Column... columns) {
+<span class="fc" id="L202">        StringBuilder set = new StringBuilder();</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">        for (Column column : columns)</span>
+<span class="fc" id="L204">            set</span>
+<span class="fc" id="L205">                    .append(column.getName())</span>
+<span class="fc" id="L206">                    .append(&quot; = &quot;)</span>
+<span class="fc" id="L207">                    .append(&quot;?, &quot;);</span>
+
+<span class="fc" id="L209">        set.deleteCharAt(set.length()-2);</span>
+<span class="fc" id="L210">        this.sql</span>
+<span class="fc" id="L211">                .append(&quot;UPDATE &quot;)</span>
+<span class="fc" id="L212">                .append(table.getTableName())</span>
+<span class="fc" id="L213">                .append(&quot; SET &quot;)</span>
+<span class="fc" id="L214">                .append(set);</span>
+<span class="fc" id="L215">        return this;</span>
+    }
+
+    @Override //UPDATE table1 SET column1 = value1, column2 = value2
+    public JSQLBuilder update(Table table, SET... set) {
+<span class="fc" id="L220">        StringBuilder stringSet = new StringBuilder();</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">        for (SET s : set)</span>
+<span class="fc" id="L222">            stringSet</span>
+<span class="fc" id="L223">                    .append(s.getColumn())</span>
+<span class="fc" id="L224">                    .append(&quot; = &quot;)</span>
+<span class="fc" id="L225">                    .append(s.getValue())</span>
+<span class="fc" id="L226">                    .append(&quot;, &quot;);</span>
+
+<span class="fc" id="L228">        stringSet.deleteCharAt(stringSet.length()-2);</span>
+<span class="fc" id="L229">        this.sql</span>
+<span class="fc" id="L230">                .append(&quot;UPDATE &quot;)</span>
+<span class="fc" id="L231">                .append(table.getTableName())</span>
+<span class="fc" id="L232">                .append(&quot; SET &quot;)</span>
+<span class="fc" id="L233">                .append(stringSet);</span>
+<span class="fc" id="L234">        return this;</span>
+    }
+
+    @Override
+    public JSQLBuilder delete(Table table) {
+<span class="fc" id="L239">        this.sql</span>
+<span class="fc" id="L240">                .append(&quot;DELETE FROM &quot;)</span>
+<span class="fc" id="L241">                .append(table.getTableName())</span>
+<span class="fc" id="L242">                .append(' ');</span>
+<span class="fc" id="L243">        return this;</span>
+    }
+
+    @Override
+    public String getSQL() {
+<span class="fc" id="L248">        String response = this.sql.toString();</span>
+<span class="fc" id="L249">        this.bufferCleanup();</span>
+<span class="fc" id="L250">        return response;</span>
+    }
+
+    @Override
+    public void bufferCleanup() {
+<span class="fc" id="L255">        this.sql.delete(0, this.sql.length());</span>
+<span class="fc" id="L256">    }</span>
+
+    private void addSelectStatement(Column[] columns) {
+<span class="fc bfc" id="L259" title="All 2 branches covered.">        for (Column column : columns) {</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">            if (column == null)</span>
+<span class="fc" id="L261">                throw new IllegalArgumentException(&quot;Column does not exist in this table. &quot; +</span>
+                        &quot;Please check column name, table, configuration of JSQLBuilder.&quot;);
+
+//            switch ((PGDataTypes) column.getType()) {
+//                case DATE:
+//                case TEXT:
+//                default:
+<span class="fc" id="L268">                    this.sql.append(&quot; &quot;);</span>
+<span class="pc bpc" id="L269" title="1 of 2 branches missed.">                    if (column.getNameWithTablePrefix() == null)</span>
+<span class="nc" id="L270">                        this.sql.append(column.getName());</span>
+                    else
+<span class="fc" id="L272">                        this.sql.append(column.getNameWithTablePrefix());</span>
+<span class="fc" id="L273">                    this.sql.append(&quot;,&quot;);</span>
+//                    break;
+//                case UUID:
+//                    this.sql
+//                            .append(&quot; &quot;).append(&quot;CONVERT(VARCHAR(36), &quot;)
+//                            .append(entry.getKey()).append(&quot; ) as &quot;)
+//                            .append(entry.getKey()).append(&quot;,&quot;);
+//                    break;
+//            }
+        }
+<span class="fc" id="L283">    }</span>
+
+    @Override
+    public String toString() {
+<span class="fc" id="L287">        return &quot;sql: &quot; + sql;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.7.201606060606</span></div></body></html>

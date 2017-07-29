@@ -29,7 +29,7 @@ public class PGDataTypesTest {
     }
 
     @Test
-    public void testBIT_VARYING() {
+    public void testBITVARYING() {
         Assert.assertEquals(0, new BIT_VARYING(0).getCapacity());
         Assert.assertEquals("BIT VARYING", new BIT_VARYING(0).getName());
         Assert.assertEquals(15, new BIT_VARYING(15).getCapacity());
@@ -68,7 +68,7 @@ public class PGDataTypesTest {
     }
 
     @Test
-    public void testCHARACTER_VARYING() {
+    public void testCHARACTERVARYING() {
         Assert.assertEquals(0, new CHARACTER_VARYING(0).getCapacity());
         Assert.assertEquals("CHARACTER VARYING", new CHARACTER_VARYING(0).getName());
         Assert.assertEquals(15, new CHARACTER_VARYING(15).getCapacity());
@@ -153,7 +153,7 @@ public class PGDataTypesTest {
     }
 
     @Test
-    public void testPG_LSN() {
+    public void testPGLSN() {
         Assert.assertEquals(0, new PG_LSN().getCapacity());
         Assert.assertEquals("PG_LSN", new PG_LSN().getName());
     }
@@ -237,7 +237,7 @@ public class PGDataTypesTest {
     }
 
     @Test
-    public void testTXID_SNAPSHOT() {
+    public void testTXIDSNAPSHOT() {
         Assert.assertEquals(0, new TXID_SNAPSHOT().getCapacity());
         Assert.assertEquals("TXID_SNAPSHOT", new TXID_SNAPSHOT().getName());
     }
