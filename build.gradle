@@ -96,7 +96,7 @@ def generatePom(Object pom) {
         root.appendNode('name', "${stringName}")
         root.appendNode('inceptionYear', "${inceptionYear}")
         root.appendNode('description', 'JSQLB is a little Java library for dynamically generating SQL.')
-        root.appendNode('url', 'https://github.com/fedorchuck/jsqlb')
+        root.appendNode('url', 'https://fedorchuck.github.io/jsqlb/website/index.html')
         def nodeScm = root.appendNode('scm')
         nodeScm.appendNode('url', 'https://github.com/fedorchuck/jsqlb')
         nodeScm.appendNode('connection', 'scm:git:https://github.com/fedorchuck/jsqlb')
